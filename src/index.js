@@ -25,7 +25,8 @@ const picsApiService = new PicsApiService();
 
 function renderPicsCard(response) {
     const card = picsCardTpl({ hits: response.hits });
-    refs.articlesContainer.insertAdjacentHTML('beforeend', card)
+    refs.articlesContainer.insertAdjacentHTML('beforeend', card);
+    loadMoreBtn.enable();
 
 };
 
@@ -38,7 +39,7 @@ function onSearch(e) {
     refs.articlesContainer.innerHTML = '';
     picsApiService.resetPage();
     picsApiService.searchQuery = e.currentTarget.elements.query.value;
-    picsApiService.fetchArticles().then(renderPicsCard) 
+    picsApiService.fetchArticles().then(renderPicsCard)
     // не виходить в then додати loadMoreBtn.enable();
         .catch(onFetchError)
         .finally(() => e.target.value = '');
@@ -47,10 +48,7 @@ function onSearch(e) {
 function onLoadMore(e) {
     loadMoreBtn.disable();
 
-    picsApiService.fetchArticles().then(() => {
-        renderPicsCard;
-        loadMoreBtn.enable();
-    });       
+    picsApiService.fetchArticles().then(renderPicsCard);       
     console.log('click');
 }
 
